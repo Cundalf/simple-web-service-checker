@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web-service-checker:
+    build: .
+    container_name: web-service-checker
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Para persistir logs si quieres (opcional)
+      - ./logs:/app/logs
+    networks:
+      - monitoring
+    # Limitar recursos del contenedor
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.1'
+        reservations:
+          memory: 64M
+          cpus: '0.05'
+
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  logs:
